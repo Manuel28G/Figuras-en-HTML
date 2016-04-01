@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<script src="Babylon.js"></script>
+    <script src="Movimientos.js"></script>
+	
+	</head>
+	<body>
+		<div id="divconCaracteristicas">
+			<canvas id="Modelo3D">
+			</canvas>
+        </div>
+        <style>
+             html,body,div,canvas{
+             	width:100%;
+             	height: 100%;
+             	padding: 0;
+             	margin: 0;
+             	overflow: hidden;
+
+             }
+          </style>
+          <script >
+          //elementos canvas
+          var ElementoCanvas=document.getElementById("Modelo3D");
+          //cargar BABYLON 3D en el canvas
+          var MotorBabylon=new BABYLON.Engine(ElementoCanvas,true);
+          //Escenario
+          var Escenario=new BABYLON.Scene(MotorBabylon);
+          //Cargar camara
+          var Camara=new BABYLON.ArcRotateCamera("Camera",1.5,1.5,50,new BABYLON.Vector3(0,0,0),Escenario);
+          //luz
+          var luz= new BABYLON.PointLight("Omni",new BABYLON.Vector3(0,0,15),Escenario);
+
+
+          //elemento 3D bx  La parte superior
+          var box=BABYLON.Mesh.CreateBox("Box",5.0,Escenario);
+          box.scaling= new BABYLON.Vector3(1,10,1);
+          box.rotation= new BABYLON.Vector3(1.5,1,0);
+
+          box.animations.push(animacionBoxS);
+          Escenario.beginAnimation(box,0,100,true);
+          box.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          box.material.diffuseTexture=new BABYLON.Texture("MetalHuecoOxido.jpg",Escenario);
+
+          box.animations.push(animacionBoxS);
+          Escenario.beginAnimation(box,0,100,true);
+          box.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          box.material.diffuseTexture=new BABYLON.Texture("MetalHuecoOxido.jpg",Escenario);
+
+          //los dos postes laterales
+          //lateral 1
+          var box2=BABYLON.Mesh.CreateBox("Box2",5.0,Escenario);
+          box2.scaling= new BABYLON.Vector3(0.25,6,0.5);
+          box2.rotation= new BABYLON.Vector3(0,1,0);
+          box2.position=new BABYLON.Vector3(-12,-15,-11);
+          box2.animations.push(animacionBoxLat1);
+          Escenario.beginAnimation(box2,0,100,true);
+          box2.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          box2.material.diffuseTexture=new BABYLON.Texture("vinilo.jpg",Escenario);
+
+
+          //lateral 2
+          var box3=BABYLON.Mesh.CreateBox("Box3",5.0,Escenario);
+          box3.scaling= new BABYLON.Vector3(0.25,6,0.5);
+          box3.rotation= new BABYLON.Vector3(0,1,0);
+          box3.position=new BABYLON.Vector3(-15,-15,-6);
+          box3.animations.push(animacionBoxLat2);
+          Escenario.beginAnimation(box3,0,100,true);
+          box3.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          box3.material.diffuseTexture=new BABYLON.Texture("vinilo.jpg",Escenario);
+
+
+          //contruyendo la torre lateral 1
+          var p1=BABYLON.Mesh.CreateBox("p1",5.0,Escenario);
+          p1.scaling= new BABYLON.Vector3(0.25,5,0.5);
+          p1.rotation= new BABYLON.Vector3(0.25,1,-0.25);
+          p1.position=new BABYLON.Vector3(5,-12,2);
+          p1.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          p1.material.diffuseTexture=new BABYLON.Texture("oxidado.jpg",Escenario);
+
+           
+          var p2=BABYLON.Mesh.CreateBox("p2",5.0,Escenario);
+          p2.scaling= new BABYLON.Vector3(0.25,5,0.5);
+          p2.rotation= new BABYLON.Vector3(0.25,1,0.25);
+          p2.position=new BABYLON.Vector3(5,-12,2);
+          p2.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          p2.material.diffuseTexture=new BABYLON.Texture("oxidado.jpg",Escenario);
+
+          //contruyendo la torre lateral 2
+          var p3=BABYLON.Mesh.CreateBox("p3",5.0,Escenario);
+          p3.scaling= new BABYLON.Vector3(0.25,5,0.5);
+          p3.rotation= new BABYLON.Vector3(-0.25,1,-0.25);
+          p3.position=new BABYLON.Vector3(5,-12,2);
+          p3.material=new BABYLON.StandardMaterial("MaterialBase",Escenario);
+          p3.material.diffuseTexture=new BABYLON.Texture("oxidado.jpg",Escenario);
+           
+          var p4=BABYLON.Mesh.CreateBox("p4",5.0,Escenario);
+          p4.scaling= new BABYLON.Vector3(0.25,5,0.5);
+          p4.rotation= new BABYLON.Vector3(-0.25,1,0.25);
+          p4.position=new BABYLON.Vector3(5,-12,2);
+          p4.material=new BABYLON.StandardMaterial("Materialbase",Escenario);
+          p4.material.diffuseTexture=new BABYLON.Texture("oxidado.jpg",Escenario);
+           
+          
+
+          //emento 3D cilindro
+          //(name, height, diamTop, diamBottom, tessellation, [optional height subdivs], scene, updatable)
+          //contrapeso
+          var cilindro=BABYLON.Mesh.CreateCylinder("cilindro1",3,10,10,10,10,Escenario);
+          cilindro.rotation=new BABYLON.Vector3(1.5,1,0);
+          cilindro.position=new BABYLON.Vector3(-19,-1.5,-11);
+          cilindro.material=new BABYLON.StandardMaterial("Materialcilindro",Escenario);
+          cilindro.material.diffuseColor=new BABYLON.Color3(0,0,0);
+          cilindro.material.emissiveTexture=new BABYLON.Texture("MetalTuerca.jpg",Escenario);
+          cilindro.animations.push(animacionContrapesoy);
+          cilindro.animations.push(animacionContrapesox);
+          cilindro.animations.push(animacionContrapesoxT);
+          Escenario.beginAnimation(cilindro,0,100,true);
+
+
+
+          //martillosuperior
+           var martillo2=BABYLON.Mesh.CreateCylinder("martillo2",20,10,5,10,10,Escenario);
+          martillo2.position=new BABYLON.Vector3(23,5,15);
+          martillo2.material=new BABYLON.StandardMaterial("MaterialMartillo",Escenario);
+          martillo2.material.diffuseColor=new BABYLON.Color3(0.1,0,0);
+           martillo2.material.emissiveTexture=new BABYLON.Texture("Metal1.jpg",Escenario);
+          martillo2.animations.push(animacionMartillo2x);
+          martillo2.animations.push(animacionMartillo2y);
+          martillo2.animations.push(animacionMartillo2xT);
+          Escenario.beginAnimation(martillo2,0,100,true);
+
+          //tubo saca petroleo
+           var tub=BABYLON.Mesh.CreateCylinder("martillo2",40,2,2,10,10,Escenario);
+          tub.position=new BABYLON.Vector3(27,-7,15);
+          tub.material=new BABYLON.StandardMaterial("MaterialMartillo",Escenario);
+          //tub.material.diffuseColor=new BABYLON.Color3(0.1,0,0);
+          tub.material.diffuseTexture=new BABYLON.Texture("metalHuecos.jpg",Escenario);
+          tub.animations.push(animaciontuboy);
+          tub.animations.push(animaciontubox);
+          Escenario.beginAnimation(tub,0,100,true);
+
+          //elemeto 3D esfera
+          var figura2=BABYLON.Mesh.CreateSphere("figurasphere",10,1,Escenario);
+          figura2.material=new BABYLON.StandardMaterial("Materialesfera2",Escenario);
+          figura2.position= new BABYLON.Vector3(5.5,0,6.4);
+          figura2.material.diffuseColor=new BABYLON.Color3(1,1,0);
+
+          //elemeto 3D esfera
+          var figura=BABYLON.Mesh.CreateSphere("figurasphere",10,1,Escenario);
+          figura.material=new BABYLON.StandardMaterial("Materialesfera",Escenario);
+          figura.position= new BABYLON.Vector3(9,0,0);
+          figura.material.diffuseColor=new BABYLON.Color3(1,1,0);
+
+          //petroleo
+          var petroleo=BABYLON.Mesh.CreateBox("petroleo",5.0,Escenario);
+         petroleo.position=new BABYLON.Vector3(27,-23.5,15);
+          petroleo.scaling=new BABYLON.Vector3(3,3,0.05);
+          petroleo.rotation=new BABYLON.Vector3((Math.PI*90)/180,(Math.PI *180)/180,0);
+          petroleo.material=new BABYLON.StandardMaterial("Materialpetr",Escenario);
+          petroleo.material.diffuseTexture=new BABYLON.Texture("petroleo.jpg",Escenario);
+
+
+
+
+          //elemento Paisaje 
+          var plano=BABYLON.Mesh.CreateBox("Paisaje",100,Escenario);
+          plano.position=new BABYLON.Vector3(0,25,-50);
+          plano.scaling=new BABYLON.Vector3(10,plano.scaling.y,0.05);
+          plano.rotation=new BABYLON.Vector3(0,(Math.PI *180)/180,0);
+          plano.material=new BABYLON.StandardMaterial("MaterialPlano",Escenario);
+          plano.material.diffuseTexture=new BABYLON.Texture("Paisaje.jpg",Escenario);
+
+           //elemento Piso
+          var piso=BABYLON.Mesh.CreateBox("Paisaje",100,Escenario);
+          piso.position=new BABYLON.Vector3(0,-26,-50);
+          piso.scaling=new BABYLON.Vector3(10,4,0.05);
+          piso.rotation=new BABYLON.Vector3((Math.PI*90)/180,(Math.PI *180)/180,0);
+          piso.material=new BABYLON.StandardMaterial("MaterialPlano",Escenario);
+          piso.material.diffuseTexture=new BABYLON.Texture("pisolodoso.jpg",Escenario);
+          
+
+          //elemento torus DONA
+          var torus=BABYLON.Mesh.CreateTorus("Torus",5,2,100,Escenario,false);
+          torus.position=new BABYLON.Vector3(5.5,-13,1.1);
+          torus.material=new BABYLON.StandardMaterial("MaterialTorus",Escenario);
+          torus.material.diffuseTexture=new BABYLON.Texture("MetalTuerca.jpg",Escenario);
+          torus.material.diffuseTexture.uScale=5;
+          torus.material.diffuseTexture.vScale=5;
+          
+          //agregar la camara al escenario
+
+         
+
+
+
+          Escenario.activeCamera.attachControl(ElementoCanvas);
+          //agregamos un render del escenario
+          MotorBabylon.runRenderLoop(function(){
+          	Escenario.render();
+          });
+
+          </script>
+	</body>
+</html>
